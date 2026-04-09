@@ -142,8 +142,8 @@ const css = `
 .tav{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--br),var(--bb));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:var(--wh);box-shadow:0 4px 15px rgba(192,57,43,.3)}
 .tnm{font-weight:600;font-size:15px}.trl{font-size:12px;color:var(--sd);margin-top:2px}.tst{display:flex;gap:2px;color:var(--gd);font-size:13px;margin-top:4px}
 
-.asec{background:var(--navy)}
-.agr{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1200px}
+.asec{background:url('/about-bg.png') right center/contain no-repeat var(--navy);position:relative}.asec::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--navy) 50%,rgba(10,25,41,.7) 100%);pointer-events:none}
+.agr{display:grid;grid-template-columns:1fr;gap:64px;align-items:center;max-width:700px;position:relative;z-index:1}
 .afs{display:flex;flex-direction:column;gap:16px}
 .af{display:flex;gap:16px;align-items:flex-start;padding:20px;background:var(--gl);border:1px solid var(--gb);border-radius:var(--r);transition:all .3s}.af:hover{border-color:var(--bbl);background:rgba(255,255,255,.06)}
 .afi{width:50px;height:50px;border-radius:14px;flex-shrink:0;background:linear-gradient(135deg,var(--bb),var(--bbl));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 15px rgba(44,95,124,.3)}
@@ -290,13 +290,6 @@ export default function App() {
           <h2 className="stt">Tradição e Tecnologia a Serviço da Sua Operação</h2>
           <p className="ssb" style={{marginBottom:28}}>Com mais de duas décadas, a J&J é referência nacional em manutenção e recuperação de sistemas hidráulicos.</p>
           <div className="afs">{[{i:"🕐",t:"Atendimento 24 Horas",d:"Suporte emergencial a qualquer hora, 7 dias por semana."},{i:"🇧🇷",t:"Atuação Nacional",d:"Cobertura em todo o território brasileiro."},{i:"🏆",t:"Equipe Qualificada",d:"Técnicos com certificações atualizadas."},{i:"✅",t:"+1.000 Serviços",d:"Excelência comprovada e satisfação total."}].map((f,i)=>(<div key={i} className="af"><div className="afi">{f.i}</div><div><div className="aft">{f.t}</div><div className="afd">{f.d}</div></div></div>))}</div>
-        </div>
-        <div className="avis">
-          <div style={{position:"relative",zIndex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:12,padding:"0 24px 32px"}}>
-            <LogoLg size={100}/>
-            <div style={{fontFamily:"var(--f)",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:.5}}>J&J Hidráulicos</div>
-            <div style={{fontSize:11,color:"rgba(255,255,255,.8)",textTransform:"uppercase",letterSpacing:4,fontWeight:600}}>Desde 2006 • Excelência Hidráulica</div>
-          </div>
         </div>
       </div>
     </section>
