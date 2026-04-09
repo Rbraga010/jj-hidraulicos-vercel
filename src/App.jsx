@@ -148,7 +148,7 @@ const css = `
 .af{display:flex;gap:16px;align-items:flex-start;padding:20px;background:var(--gl);border:1px solid var(--gb);border-radius:var(--r);transition:all .3s}.af:hover{border-color:var(--bbl);background:rgba(255,255,255,.06)}
 .afi{width:50px;height:50px;border-radius:14px;flex-shrink:0;background:linear-gradient(135deg,var(--bb),var(--bbl));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 15px rgba(44,95,124,.3)}
 .aft{font-weight:600;font-size:15px;margin-bottom:4px}.afd{font-size:13px;color:var(--sl);line-height:1.6}
-.avis{position:relative;height:500px;border-radius:24px;overflow:hidden;background:#ffffff;border:1px solid rgba(44,95,124,.15);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;box-shadow:0 8px 40px rgba(0,0,0,.15)}
+.avis{position:relative;height:500px;border-radius:24px;overflow:hidden;background:url('/about-bg.png') center/cover no-repeat;border:1px solid rgba(44,95,124,.15);display:flex;align-items:flex-end;justify-content:center;flex-direction:column;gap:12px;box-shadow:0 8px 40px rgba(0,0,0,.15)}.avis::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,25,41,.2) 0%,rgba(10,25,41,.75) 100%)}
 
 .ctasec{padding:120px 48px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--navy) 0%,var(--nl) 50%,var(--navy) 100%)}
 .ctaorb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,.1) 0%,transparent 65%);filter:blur(60px);pointer-events:none}
@@ -292,9 +292,11 @@ export default function App() {
           <div className="afs">{[{i:"🕐",t:"Atendimento 24 Horas",d:"Suporte emergencial a qualquer hora, 7 dias por semana."},{i:"🇧🇷",t:"Atuação Nacional",d:"Cobertura em todo o território brasileiro."},{i:"🏆",t:"Equipe Qualificada",d:"Técnicos com certificações atualizadas."},{i:"✅",t:"+1.000 Serviços",d:"Excelência comprovada e satisfação total."}].map((f,i)=>(<div key={i} className="af"><div className="afi">{f.i}</div><div><div className="aft">{f.t}</div><div className="afd">{f.d}</div></div></div>))}</div>
         </div>
         <div className="avis">
-          <LogoLg size={180}/>
-          <div style={{fontFamily:"var(--f)",fontSize:18,fontWeight:700,color:"#163254",letterSpacing:.5}}>J&J Hidráulicos</div>
-          <div style={{fontSize:11,color:"#3a7ca5",textTransform:"uppercase",letterSpacing:4,fontWeight:600}}>Desde 2006 • Excelência Hidráulica</div>
+          <div style={{position:"relative",zIndex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:12,padding:"0 24px 32px"}}>
+            <LogoLg size={100}/>
+            <div style={{fontFamily:"var(--f)",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:.5}}>J&J Hidráulicos</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,.8)",textTransform:"uppercase",letterSpacing:4,fontWeight:600}}>Desde 2006 • Excelência Hidráulica</div>
+          </div>
         </div>
       </div>
     </section>
