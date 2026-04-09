@@ -130,10 +130,10 @@ const css = `
 /* TESTIMONIALS */
 .tsec{padding:120px 0;overflow:hidden;scroll-margin-top:80px;position:relative;background:linear-gradient(180deg,var(--nl) 0%,var(--navy) 100%)}
 .thdr{padding:0 48px;margin-bottom:64px}
-.ttw{position:relative;width:100%;overflow:hidden}
+.ttw{position:relative;width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}.ttw::-webkit-scrollbar{display:none}
 .ttw::before,.ttw::after{content:'';position:absolute;top:0;bottom:0;width:180px;z-index:5;pointer-events:none}
 .ttw::before{left:0;background:linear-gradient(90deg,var(--navy),transparent)}.ttw::after{right:0;background:linear-gradient(270deg,var(--navy),transparent)}
-.ttr{display:flex;gap:28px;width:max-content;animation:scrl 42s linear infinite}.ttr:hover{animation-play-state:paused}
+.ttr{display:flex;gap:28px;width:max-content;cursor:grab}.ttr:active{cursor:grabbing}.ttr.dragging .tc{pointer-events:none}
 .tc{flex-shrink:0;width:420px;background:linear-gradient(145deg,rgba(192,57,43,.14) 0%,rgba(192,57,43,.04) 35%,rgba(255,255,255,.03) 100%);border:1px solid rgba(192,57,43,.14);border-radius:24px;padding:36px;position:relative;overflow:hidden;transition:all .4s;animation:gpulse 5s ease-in-out infinite}
 .tc::before{content:'';position:absolute;top:-40%;right:-40%;width:180%;height:180%;background:radial-gradient(circle at 30% 30%,rgba(192,57,43,.07) 0%,transparent 50%);pointer-events:none}
 .tc:hover{border-color:rgba(192,57,43,.3);transform:scale(1.02)}
@@ -239,6 +239,22 @@ export default function App() {
   if(showAdmin&&adminAuth)return(<><style>{css}</style><CRM crmData={crmData} adminPage={adminPage} setAdminPage={setAdminPage} onClose={()=>{setShowAdmin(false);setAdminAuth(false);setAdminPwd("");}} addR={addR} delR={delR} updR={updR} modal={modal} setModal={setModal} fd={formData} setFD={setFormData}/></>);
 
   const td=[...TESTIMONIALS,...TESTIMONIALS,...TESTIMONIALS,...TESTIMONIALS];
+  const twRef=useRef(null);
+  useEffect(()=>{
+    const el=twRef.current;if(!el)return;
+    let raf,dragging=false,startX,scrollL,userInt=false,timer;
+    const speed=0.6;
+    const auto=()=>{if(!userInt&&el){el.scrollLeft+=speed;if(el.scrollLeft>=el.scrollWidth/2)el.scrollLeft=0;}raf=requestAnimationFrame(auto);};
+    raf=requestAnimationFrame(auto);
+    const resetAuto=()=>{userInt=true;clearTimeout(timer);timer=setTimeout(()=>{userInt=false;},3000);};
+    const onDown=e=>{dragging=true;startX=(e.pageX||e.touches?.[0]?.pageX)-el.offsetLeft;scrollL=el.scrollLeft;el.querySelector('.ttr')?.classList.add('dragging');resetAuto();};
+    const onMove=e=>{if(!dragging)return;e.preventDefault();const x=(e.pageX||e.touches?.[0]?.pageX)-el.offsetLeft;el.scrollLeft=scrollL-(x-startX);};
+    const onUp=()=>{dragging=false;el.querySelector('.ttr')?.classList.remove('dragging');};
+    el.addEventListener('mousedown',onDown);el.addEventListener('mousemove',onMove);el.addEventListener('mouseup',onUp);el.addEventListener('mouseleave',onUp);
+    el.addEventListener('touchstart',onDown,{passive:true});el.addEventListener('touchmove',onMove,{passive:false});el.addEventListener('touchend',onUp);
+    el.addEventListener('wheel',resetAuto,{passive:true});
+    return()=>{cancelAnimationFrame(raf);clearTimeout(timer);el.removeEventListener('mousedown',onDown);el.removeEventListener('mousemove',onMove);el.removeEventListener('mouseup',onUp);el.removeEventListener('mouseleave',onUp);el.removeEventListener('touchstart',onDown);el.removeEventListener('touchmove',onMove);el.removeEventListener('touchend',onUp);el.removeEventListener('wheel',resetAuto);};
+  },[]);
 
   return(<><style>{css}</style><div className="noise"/>
     <nav className={`nav ${scrolled?"scr":""}`}><Logo size={40} dark/><div className="navl"><a href="#servicos">Serviços</a><a href="#depoimentos">Depoimentos</a><a href="#quemsomos">Quem Somos</a><a href={WL} target="_blank" rel="noopener" className="ncta"><WI s={18}/> Orçamento</a></div></nav>
@@ -281,7 +297,7 @@ export default function App() {
 
     <section id="depoimentos" className="tsec">
       <div className="thdr"><div className="slbl"><span className="sln"/> Depoimentos</div><h2 className="stt">O Que Nossos Clientes Dizem</h2><p className="ssb">Confiança construída em mais de duas décadas de excelência técnica.</p></div>
-      <div className="ttw"><div className="ttr">{td.map((t,i)=>(<div key={i} className="tc"><div className="tq">"</div><div className="ttx">{t.text}</div><div className="ta"><div className="tav">{t.name[0]}</div><div><div className="tnm">{t.name}</div><div className="trl">{t.role}</div><div className="tst">★★★★★</div></div></div></div>))}</div></div>
+      <div className="ttw" ref={twRef}><div className="ttr">{td.map((t,i)=>(<div key={i} className="tc"><div className="tq">"</div><div className="ttx">{t.text}</div><div className="ta"><div className="tav">{t.name[0]}</div><div><div className="tnm">{t.name}</div><div className="trl">{t.role}</div><div className="tst">★★★★★</div></div></div></div>))}</div></div>
     </section>
 
     <section id="quemsomos" className="sec asec">
