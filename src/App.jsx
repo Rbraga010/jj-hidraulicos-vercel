@@ -89,19 +89,20 @@ const css = `
 .bgh{background:transparent;border:1.5px solid var(--gbh);color:var(--wh);padding:16px 36px;border-radius:14px;font-size:16px;font-weight:500;cursor:pointer;transition:all .4s;text-decoration:none;display:inline-flex;align-items:center;gap:10px;font-family:var(--f)}.bgh:hover{background:rgba(255,255,255,.06);border-color:var(--bbl);transform:translateY(-2px)}
 
 /* ═══ STATS - SEÇÃO 2 VIBRANTE ═══ */
-.stats-section{position:relative;z-index:10;padding:100px 48px;background:linear-gradient(135deg,var(--br) 0%,#a93226 40%,#7b241c 100%);overflow:hidden}
-.stats-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
-.stats-section::after{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 60%);pointer-events:none}
+.stats-section{position:relative;z-index:10;padding:100px 48px;background:linear-gradient(180deg,var(--navy) 0%,var(--nl) 50%,var(--navy) 100%);overflow:hidden}
+.stats-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(44,95,124,.15) 0%,transparent 60%);pointer-events:none}
+.stats-section::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,.06) 0%,transparent 50%);pointer-events:none;filter:blur(40px)}
 .stats-inner{max-width:1200px;margin:0 auto}
 .stats-header{text-align:center;margin-bottom:60px;position:relative;z-index:1}
 .stats-header h2{font-size:clamp(30px,3.5vw,46px);font-weight:800;color:var(--wh);margin-bottom:12px;letter-spacing:-.5px}
-.stats-header p{font-size:16px;color:rgba(255,255,255,.7);font-weight:400;max-width:500px;margin:0 auto}
+.stats-header p{font-size:16px;color:var(--sl);font-weight:400;max-width:500px;margin:0 auto}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;z-index:1}
-.stat-card{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:36px 24px;text-align:center;transition:all .4s}
-.stat-card:hover{transform:translateY(-8px);background:rgba(255,255,255,.15);box-shadow:0 20px 50px rgba(0,0,0,.3)}
-.stat-num{font-size:48px;font-weight:800;color:var(--wh);line-height:1;margin-bottom:8px;text-shadow:0 2px 10px rgba(0,0,0,.2)}
-.stat-lbl{font-size:12px;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:2px;font-weight:600}
-.stat-line{width:40px;height:3px;background:rgba(255,255,255,.3);border-radius:2px;margin:12px auto 0}
+.stat-card{background:rgba(255,255,255,.04);backdrop-filter:blur(16px);border:1px solid var(--gb);border-radius:20px;padding:40px 24px;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--bb),var(--br));opacity:0;transition:opacity .4s}
+.stat-card:hover{transform:translateY(-8px);background:rgba(255,255,255,.07);border-color:var(--bbl);box-shadow:0 20px 50px rgba(0,0,0,.25)}.stat-card:hover::before{opacity:1}
+.stat-num{font-size:52px;font-weight:800;line-height:1;margin-bottom:10px;background:linear-gradient(135deg,var(--wh) 0%,var(--br) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:11px;color:var(--sl);text-transform:uppercase;letter-spacing:2.5px;font-weight:600}
+.stat-line{width:40px;height:2px;background:linear-gradient(90deg,var(--bb),var(--br));border-radius:2px;margin:14px auto 0;opacity:.4}
 
 .sec{padding:120px 48px;position:relative;scroll-margin-top:80px}
 .slbl{display:inline-flex;align-items:center;gap:10px;color:var(--brl);font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;margin-bottom:16px}
