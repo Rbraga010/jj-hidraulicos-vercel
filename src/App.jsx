@@ -25,12 +25,12 @@ const SERVICES = [
   { title:"Manutenção Preventiva", desc:"Inspeção periódica completa para prevenir falhas, garantir vida útil e reduzir custos operacionais.", icon:"🔧", img:"/services/manutencao-preventiva.jpg" },
   { title:"Recuperação de Bombas", desc:"Desmontagem, análise, substituição de componentes e teste de bancada. Todas as marcas. Pistões, engrenagens internas, palhetas fixa e variável.", icon:"⚙️", img:"/services/recuperacao-bombas.jpg" },
   { title:"Manutenção Corretiva 24h", desc:"Atendimento emergencial para falhas críticas. Diagnóstico preciso e reparo ágil.", icon:"🚨", img:"/services/manutencao-corretiva.jpg" },
-  { title:"Reparo de Cilindros Hidráulicos", desc:"Brunimento da camisa, troca de vedações, recuperação de hastes. Qualquer porte.", icon:"🔩" },
-  { title:"Mangueiras e Conexões", desc:"Substituição com peças certificadas. Engates rápidos.", icon:"🔗" },
-  { title:"Filtragem e Limpeza de Reservatório de Óleo", desc:"Filtração e recomendação técnica de tratamento.", icon:"🧪" },
-  { title:"Unidades Hidráulicas", desc:"Projeto, montagem, manutenção e reformas industriais e móveis.", icon:"🏭" },
-  { title:"Válvulas e Comandos", desc:"Reparo de válvulas direcionais, proporcionais, blocos manifold e comandos hidráulicos.", icon:"🎛️" },
-  { title:"Consultoria Técnica", desc:"Dimensionamento, laudos técnicos e adequação às normas de segurança.", icon:"📋" },
+  { title:"Reparo de Cilindros Hidráulicos", desc:"Brunimento da camisa, troca de vedações, recuperação de hastes. Qualquer porte.", icon:"🔩", img:"/services/reparo-cilindros.jpg" },
+  { title:"Mangueiras e Conexões", desc:"Substituição com peças certificadas. Engates rápidos.", icon:"🔗", img:"/services/mangueiras-conexoes.jpg" },
+  { title:"Filtragem e Limpeza de Reservatório de Óleo", desc:"Filtração e recomendação técnica de tratamento.", icon:"🧪", img:"/services/filtragem-limpeza.jpg" },
+  { title:"Unidades Hidráulicas", desc:"Projeto, montagem, manutenção e reformas industriais e móveis.", icon:"🏭", img:"/services/unidades-hidraulicas.jpg" },
+  { title:"Válvulas e Comandos", desc:"Reparo de válvulas direcionais, proporcionais, blocos manifold e comandos hidráulicos.", icon:"🎛️", img:"/services/valvulas-comandos.jpg" },
+  { title:"Consultoria Técnica", desc:"Dimensionamento, laudos técnicos e adequação às normas de segurança.", icon:"📋", img:"/services/consultoria-tecnica.jpg" },
 ];
 
 const TESTIMONIALS = [
