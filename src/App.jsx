@@ -276,7 +276,7 @@ export default function App() {
       <div className="slbl"><span className="sln"/> Nossos Serviços</div>
       <h2 className="stt">Soluções Hidráulicas<br/>de Alta Performance</h2>
       <p className="ssb">Da manutenção preventiva à recuperação completa. Bombas de palheta, cilindros, unidades de potência e muito mais.</p>
-      <div className="sg">{SERVICES.map((s,i)=>(<div key={i} className="sc"><div className="sct" style={s.img?{backgroundImage:`url(${s.img})`}:{}}>{!s.img&&<div className="sctp"/>}<span className="sci">{s.icon}</span></div><div className="scb"><div className="sctt">{s.title}</div><div className="scd">{s.desc}</div><a href={WL} target="_blank" rel="noopener" className="sc-cta">Solicitar orçamento →</a></div><div className="sca"/></div>))}</div>
+      <div className="sg">{SERVICES.map((s,i)=>(<div key={i} className="sc"><div className="sct" style={s.img?{backgroundImage:`url(${s.img})`}:{}}>{!s.img&&<><div className="sctp"/><span className="sci">{s.icon}</span></>}</div><div className="scb"><div className="sctt">{s.title}</div><div className="scd">{s.desc}</div><a href={WL} target="_blank" rel="noopener" className="sc-cta">Solicitar orçamento →</a></div><div className="sca"/></div>))}</div>
     </section>
 
     <section id="depoimentos" className="tsec">
