@@ -22,9 +22,9 @@ const LogoLg = ({ size = 200 }) => (
 );
 
 const SERVICES = [
-  { title:"Manutenção Preventiva", desc:"Inspeção periódica completa para prevenir falhas, garantir vida útil e reduzir custos operacionais.", icon:"🔧" },
-  { title:"Recuperação de Bombas", desc:"Desmontagem, análise, substituição de componentes e teste de bancada. Todas as marcas. Pistões, engrenagens internas, palhetas fixa e variável.", icon:"⚙️" },
-  { title:"Manutenção Corretiva 24h", desc:"Atendimento emergencial para falhas críticas. Diagnóstico preciso e reparo ágil.", icon:"🚨" },
+  { title:"Manutenção Preventiva", desc:"Inspeção periódica completa para prevenir falhas, garantir vida útil e reduzir custos operacionais.", icon:"🔧", img:"/services/manutencao-preventiva.jpg" },
+  { title:"Recuperação de Bombas", desc:"Desmontagem, análise, substituição de componentes e teste de bancada. Todas as marcas. Pistões, engrenagens internas, palhetas fixa e variável.", icon:"⚙️", img:"/services/recuperacao-bombas.jpg" },
+  { title:"Manutenção Corretiva 24h", desc:"Atendimento emergencial para falhas críticas. Diagnóstico preciso e reparo ágil.", icon:"🚨", img:"/services/manutencao-corretiva.jpg" },
   { title:"Reparo de Cilindros Hidráulicos", desc:"Brunimento da camisa, troca de vedações, recuperação de hastes. Qualquer porte.", icon:"🔩" },
   { title:"Mangueiras e Conexões", desc:"Substituição com peças certificadas. Engates rápidos.", icon:"🔗" },
   { title:"Filtragem e Limpeza de Reservatório de Óleo", desc:"Filtração e recomendação técnica de tratamento.", icon:"🧪" },
@@ -115,8 +115,8 @@ const css = `
 .sg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1260px}
 .sc{background:var(--gl);border:1px solid var(--gb);border-radius:20px;overflow:hidden;transition:all .5s cubic-bezier(.23,1,.32,1);cursor:default;position:relative;display:flex;flex-direction:column}
 .sc:hover{transform:translateY(-10px);border-color:var(--bbl);box-shadow:0 25px 60px rgba(0,0,0,.4),0 0 30px rgba(44,95,124,.1)}
-.sct{height:140px;background:linear-gradient(135deg,var(--nm),var(--nl));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.sct::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,25,41,.85) 100%)}
+.sct{height:160px;background:linear-gradient(135deg,var(--nm),var(--nl));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background-size:cover;background-position:center}
+.sct::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 20%,rgba(10,25,41,.9) 100%)}
 .sci{font-size:52px;position:relative;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
 .sctp{position:absolute;inset:0;opacity:.06;background-image:radial-gradient(circle at 20% 50%,var(--bbl) 1px,transparent 1px),radial-gradient(circle at 80% 20%,var(--brl) 1px,transparent 1px);background-size:40px 40px,60px 60px}
 .scb{padding:24px;flex:1;display:flex;flex-direction:column}
@@ -276,7 +276,7 @@ export default function App() {
       <div className="slbl"><span className="sln"/> Nossos Serviços</div>
       <h2 className="stt">Soluções Hidráulicas<br/>de Alta Performance</h2>
       <p className="ssb">Da manutenção preventiva à recuperação completa. Bombas de palheta, cilindros, unidades de potência e muito mais.</p>
-      <div className="sg">{SERVICES.map((s,i)=>(<div key={i} className="sc"><div className="sct"><div className="sctp"/><span className="sci">{s.icon}</span></div><div className="scb"><div className="sctt">{s.title}</div><div className="scd">{s.desc}</div><a href={WL} target="_blank" rel="noopener" className="sc-cta">Solicitar orçamento →</a></div><div className="sca"/></div>))}</div>
+      <div className="sg">{SERVICES.map((s,i)=>(<div key={i} className="sc"><div className="sct" style={s.img?{backgroundImage:`url(${s.img})`}:{}}>{!s.img&&<div className="sctp"/>}<span className="sci">{s.icon}</span></div><div className="scb"><div className="sctt">{s.title}</div><div className="scd">{s.desc}</div><a href={WL} target="_blank" rel="noopener" className="sc-cta">Solicitar orçamento →</a></div><div className="sca"/></div>))}</div>
     </section>
 
     <section id="depoimentos" className="tsec">
