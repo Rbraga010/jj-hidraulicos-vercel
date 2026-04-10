@@ -265,7 +265,7 @@ export default function App() {
       
       <div className="hc">
         <div className="hb fu"><span className="hbd"/>Mais de 20 anos de excelência</div>
-        <h1 className="fu fd1">Especialistas em<br/><span className="ar">Bombas</span> e Sistemas<br/><span className="ablu">Hidráulicos</span></h1>
+        <h1 className="fu fd1">Especialistas em<br/><span className="ar">Bombas</span> e Equipamentos<br/><span className="ablu">Hidráulicos</span></h1>
         <p className="hsub fu fd2">Manutenção preventiva, recuperação de bombas de palheta e assistência técnica com atendimento 24h em todo o Brasil.</p>
         <div className="ha fu fd3"><a href={WL} target="_blank" rel="noopener" className="bp"><WI s={22}/> Falar com Especialista</a><a href="#servicos" className="bgh">Nossos Serviços →</a></div>
       </div>
