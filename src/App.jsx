@@ -34,12 +34,12 @@ const SERVICES = [
 ];
 
 const TESTIMONIALS = [
-  { name:"Carlos Mendes",role:"Ger. Manutenção — Metalúrgica Sorocabana",text:"A J&J resolveu em 6 horas um problema que nos custava 3 dias de parada. Equipe extremamente técnica e comprometida." },
-  { name:"Fernanda Oliveira",role:"Dir. Operações — AgroBrasil",text:"Mais de 2 anos de parceria sem uma única falha no cronograma. A confiança que temos na J&J nos permite focar no que importa." },
-  { name:"Roberto Almeida",role:"Proprietário — Construtora Almeida",text:"Atendem em qualquer lugar do Brasil com a mesma qualidade. Suporte emergencial em 3 estados diferentes." },
-  { name:"Patrícia Santos",role:"Coord. Facilities — Shopping Iguatemi",text:"Profissionalismo de outro nível. O José Neto entende como ninguém do assunto. Do contato à entrega, impecável." },
-  { name:"Marcos Vieira",role:"Eng. Mecânico — Petrobrás",text:"Contratamos para parada programada e entregaram 2 dias antes do prazo. Qualidade irrepreensível nos 14 cilindros." },
-  { name:"Ana Cristina",role:"Ger. Industrial — Usina Santa Helena",text:"Na safra, cada hora parada custa caro. A J&J entende essa urgência. Parceiro indispensável há 5 anos." },
+  { name:"Carlos Mendes",role:"Gerente de Manutenção Industrial",text:"A J&J resolveu em 6 horas um problema que nos custava 3 dias de parada. Equipe extremamente técnica e comprometida.",img:"https://randomuser.me/api/portraits/men/32.jpg" },
+  { name:"Fernanda Oliveira",role:"Diretora de Operações",text:"Mais de 2 anos de parceria sem uma única falha no cronograma. A confiança que temos na J&J nos permite focar no que importa.",img:"https://randomuser.me/api/portraits/women/44.jpg" },
+  { name:"Roberto Almeida",role:"Coordenador de Manutenção",text:"Atendem em qualquer lugar do Brasil com a mesma qualidade. Suporte emergencial em 3 estados diferentes.",img:"https://randomuser.me/api/portraits/men/52.jpg" },
+  { name:"Patrícia Santos",role:"Gestora de Facilities",text:"Profissionalismo de outro nível. O José Neto entende como ninguém do assunto. Do contato à entrega, impecável.",img:"https://randomuser.me/api/portraits/women/65.jpg" },
+  { name:"Marcos Vieira",role:"Engenheiro de Manutenção Mecânica",text:"Contratamos para parada programada e entregaram 2 dias antes do prazo. Qualidade irrepreensível nos 14 cilindros.",img:"https://randomuser.me/api/portraits/men/75.jpg" },
+  { name:"Ana Cristina",role:"Gerente Industrial",text:"Na safra, cada hora parada custa caro. A J&J entende essa urgência. Parceiro indispensável há 5 anos.",img:"https://randomuser.me/api/portraits/women/28.jpg" },
 ];
 
 const STATS = [{n:"1.000+",l:"Serviços Realizados"},{n:"20+",l:"Anos de Experiência"},{n:"24h",l:"Atendimento"},{n:"100%",l:"Satisfação"}];
@@ -140,7 +140,7 @@ const css = `
 .tq{font-size:48px;color:var(--br);opacity:.2;line-height:1;margin-bottom:4px;font-weight:800}
 .ttx{font-size:15px;color:var(--sl);line-height:1.85;margin-bottom:24px;font-style:italic;position:relative;z-index:1;font-weight:400}
 .ta{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
-.tav{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--br),var(--bb));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:var(--wh);box-shadow:0 4px 15px rgba(192,57,43,.3)}
+.tav{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--br),var(--bb));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:var(--wh);box-shadow:0 4px 15px rgba(192,57,43,.3);overflow:hidden;flex-shrink:0}.tav img{width:100%;height:100%;object-fit:cover}
 .tnm{font-weight:600;font-size:15px}.trl{font-size:12px;color:var(--sd);margin-top:2px}.tst{display:flex;gap:2px;color:var(--gd);font-size:13px;margin-top:4px}
 
 .asec{background:url('/about-bg.png') right center/contain no-repeat var(--navy);position:relative}.asec::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--navy) 50%,rgba(10,25,41,.7) 100%);pointer-events:none}
@@ -297,7 +297,7 @@ export default function App() {
 
     <section id="depoimentos" className="tsec">
       <div className="thdr"><div className="slbl"><span className="sln"/> Depoimentos</div><h2 className="stt">O Que Nossos Clientes Dizem</h2><p className="ssb">Confiança construída em mais de duas décadas de excelência técnica.</p></div>
-      <div className="ttw" ref={twRef}><div className="ttr">{td.map((t,i)=>(<div key={i} className="tc"><div className="tq">"</div><div className="ttx">{t.text}</div><div className="ta"><div className="tav">{t.name[0]}</div><div><div className="tnm">{t.name}</div><div className="trl">{t.role}</div><div className="tst">★★★★★</div></div></div></div>))}</div></div>
+      <div className="ttw" ref={twRef}><div className="ttr">{td.map((t,i)=>(<div key={i} className="tc"><div className="tq">"</div><div className="ttx">{t.text}</div><div className="ta"><div className="tav">{t.img?<img src={t.img} alt={t.name}/>:t.name[0]}</div><div><div className="tnm">{t.name}</div><div className="trl">{t.role}</div><div className="tst">★★★★★</div></div></div></div>))}</div></div>
     </section>
 
     <section id="quemsomos" className="sec asec">
