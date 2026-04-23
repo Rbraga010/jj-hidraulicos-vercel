@@ -34,12 +34,12 @@ const SERVICES = [
 ];
 
 const TESTIMONIALS = [
-  { name:"Carlos Mendes",role:"Gerente de Manutenção Industrial",text:"A J&J resolveu em 6 horas um problema que nos custava 3 dias de parada. Equipe extremamente técnica e comprometida.",img:"https://randomuser.me/api/portraits/men/32.jpg" },
-  { name:"Fernanda Oliveira",role:"Diretora de Operações",text:"Mais de 2 anos de parceria sem uma única falha no cronograma. A confiança que temos na J&J nos permite focar no que importa.",img:"https://randomuser.me/api/portraits/women/44.jpg" },
-  { name:"Roberto Almeida",role:"Coordenador de Manutenção",text:"Atendem em qualquer lugar do Brasil com a mesma qualidade. Suporte emergencial em 3 estados diferentes.",img:"https://randomuser.me/api/portraits/men/52.jpg" },
-  { name:"Patrícia Santos",role:"Gestora de Facilities",text:"Profissionalismo de outro nível. O José Neto entende como ninguém do assunto. Do contato à entrega, impecável.",img:"https://randomuser.me/api/portraits/women/65.jpg" },
-  { name:"Marcos Vieira",role:"Engenheiro de Manutenção Mecânica",text:"Contratamos para parada programada e entregaram 2 dias antes do prazo. Qualidade irrepreensível nos 14 cilindros.",img:"https://randomuser.me/api/portraits/men/75.jpg" },
-  { name:"Ana Cristina",role:"Gerente Industrial",text:"Na safra, cada hora parada custa caro. A J&J entende essa urgência. Parceiro indispensável há 5 anos.",img:"https://randomuser.me/api/portraits/women/28.jpg" },
+  { name:"Ettiene Laiane",role:"@ettienelaiane",text:"Serviço de qualidade, e rápida resposta, estamos satisfeitos com o serviço." },
+  { name:"Rosimeire Pinheiro",role:"@rosimeire.pinheiro.758",text:"Ótimo serviço, com boa qualidade." },
+  { name:"Duda Almeida",role:"@duda_almeid_",text:"Os melhores!" },
+  { name:"Simone",role:"@simone.obstetricia",text:"Muito bom o serviço deles." },
+  { name:"Karina Pinheiro",role:"@karininhapinheiro",text:"Ótimo trabalho!" },
+  { name:"Kleber",role:"@klekleber",text:"Nada vence o trabalho. Sensacional!" },
 ];
 
 const STATS = [{n:"1.000+",l:"Serviços Realizados"},{n:"20+",l:"Anos de Experiência"},{n:"24h",l:"Atendimento"},{n:"100%",l:"Satisfação"}];
