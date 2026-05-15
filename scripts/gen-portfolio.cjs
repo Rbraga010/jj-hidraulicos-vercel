@@ -84,6 +84,24 @@ function safeImage(imgPath, x, y, opts) {
   return false;
 }
 
+// Gradiente vertical com fade — emula camadas escuras para garantir legibilidade
+// dir: 'top' (escuro no topo) | 'bottom' (escuro embaixo) | 'both' (escuro em cima e embaixo)
+function vGradient(x, y, w, h, dir = 'top', maxAlpha = 0.85, color = COLORS.navy) {
+  const steps = 18;
+  for (let i = 0; i < steps; i++) {
+    const t = i / (steps - 1); // 0..1
+    let alpha;
+    if (dir === 'top') alpha = maxAlpha * (1 - t);
+    else if (dir === 'bottom') alpha = maxAlpha * t;
+    else alpha = maxAlpha * Math.abs(Math.cos(t * Math.PI)); // both
+    if (alpha <= 0.005) continue;
+    doc.save();
+    doc.opacity(alpha);
+    doc.rect(x, y + (h * i / steps), w, h / steps + 1).fill(color);
+    doc.restore();
+  }
+}
+
 const TOTAL_PAGES = 6;
 
 // ═══════════════════════════════════════════════
@@ -292,16 +310,14 @@ SERVICES.forEach((s, i) => {
   const imgH = cardH * 0.62;
   const imgPath = path.join(SVC, s.img);
   if (safeImage(imgPath, x + 1, y + 1, { width: cardW - 2, height: imgH - 1, cover: [cardW - 2, imgH - 1] })) {
-    doc.save();
-    doc.opacity(0.55);
-    doc.rect(x + 1, y + imgH - 26, cardW - 2, 26).fill(COLORS.navy);
-    doc.restore();
+    // gradiente escuro no topo (para o número) e na base (transição para o texto)
+    vGradient(x + 1, y + 1, cardW - 2, 32, 'top', 0.85);
+    vGradient(x + 1, y + imgH - 38, cardW - 2, 38, 'bottom', 0.9);
   }
 
   // numero do serviço sobre a imagem
-  doc.fontSize(9).fillColor(COLORS.redL).font('Helvetica-Bold').opacity(0.9);
-  doc.text(`0${i + 1}`, x + 10, y + 8, { characterSpacing: 1 });
-  doc.opacity(1);
+  doc.fontSize(10).fillColor(COLORS.redL).font('Helvetica-Bold');
+  doc.text(`0${i + 1}`, x + 12, y + 10, { characterSpacing: 1 });
 
   // accent vermelho
   doc.rect(x, y + imgH, cardW, 2).fill(COLORS.red);
@@ -345,21 +361,20 @@ function drawDetailPage(title, subtitle, services, pageNum, startIdx) {
     const imgPath = path.join(SVC, s.img);
     safeImage(imgPath, MX + 1, y + 1, { width: imgW - 1, height: cardH - 2, cover: [imgW - 1, cardH - 2] });
 
+    // gradiente vertical na imagem — escurece o topo (área do SERVIÇO XX)
+    vGradient(MX + 1, y + 1, imgW - 1, 56, 'top', 0.92);
+    // gradiente lateral à direita da imagem (transição suave para o texto)
+    doc.save();
+    doc.opacity(0.5);
+    doc.rect(MX + imgW - 50, y, 50, cardH).fill(COLORS.navy);
+    doc.restore();
+
     // accent vertical entre imagem e texto
     doc.rect(MX + imgW, y, 3, cardH).fill(COLORS.red);
 
-    // overlay gradient na imagem (escurece lado direito da imagem para suavizar transição)
-    doc.save();
-    doc.opacity(0.4);
-    doc.rect(MX + imgW - 40, y, 40, cardH).fill(COLORS.navy);
-    doc.restore();
-
-    // número do serviço
+    // número do serviço (agora bem visível sobre o gradiente escuro)
     doc.fontSize(10).fillColor(COLORS.redL).font('Helvetica-Bold');
-    doc.text(`SERVIÇO  0${idx}`, MX + 12, y + 14, { characterSpacing: 2.5 });
-    // estrelinha de qualidade
-    doc.fontSize(10).fillColor('#f1c40f').font('Helvetica');
-    doc.text('★ ★ ★ ★ ★', MX + 12, y + cardH - 26);
+    doc.text(`SERVIÇO  0${idx}`, MX + 14, y + 16, { characterSpacing: 2.5 });
 
     // texto à direita
     const tx = MX + imgW + 22;
@@ -438,7 +453,18 @@ remainServices.forEach((s, i) => {
   const imgW = w * 0.3;
   safeImage(path.join(SVC, s.img), MX + 1, y + 1, { width: imgW - 1, height: rCardH - 2, cover: [imgW - 1, rCardH - 2] });
 
+  // gradiente no topo da imagem (legibilidade do número)
+  vGradient(MX + 1, y + 1, imgW - 1, 32, 'top', 0.88);
+  // gradiente lateral
+  doc.save(); doc.opacity(0.5);
+  doc.rect(MX + imgW - 35, y, 35, rCardH).fill(COLORS.navy);
+  doc.restore();
+
   doc.rect(MX + imgW, y, 3, rCardH).fill(COLORS.red);
+
+  // número sobre a imagem
+  doc.fontSize(9).fillColor(COLORS.redL).font('Helvetica-Bold');
+  doc.text(`0${idx}`, MX + 12, y + 12, { characterSpacing: 1.5 });
 
   const tx = MX + imgW + 20;
   const tw = w - imgW - 32;
