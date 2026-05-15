@@ -302,22 +302,37 @@ SERVICES.forEach((s, i) => {
   const x = MX + col * (cardW + gap);
   const y = gridY + row * (cardH + gap);
 
-  // fundo card
-  doc.rect(x, y, cardW, cardH)
+  // fundo card com cantos arredondados
+  doc.roundedRect(x, y, cardW, cardH, 5)
      .lineWidth(1).strokeColor(COLORS.line).fillAndStroke(COLORS.navyM, COLORS.line);
 
-  // imagem ocupa toda parte superior
+  // imagem ocupa parte superior, com clipping
   const imgH = cardH * 0.62;
   const imgPath = path.join(SVC, s.img);
-  if (safeImage(imgPath, x + 1, y + 1, { width: cardW - 2, height: imgH - 1, cover: [cardW - 2, imgH - 1] })) {
-    // gradiente escuro no topo (para o número) e na base (transição para o texto)
-    vGradient(x + 1, y + 1, cardW - 2, 32, 'top', 0.85);
-    vGradient(x + 1, y + imgH - 38, cardW - 2, 38, 'bottom', 0.9);
-  }
+  doc.save();
+  doc.roundedRect(x + 1, y + 1, cardW - 2, imgH - 1, 4).clip();
+  safeImage(imgPath, x + 1, y + 1, { cover: [cardW - 2, imgH - 1] });
+
+  // gradiente suave no topo (número)
+  try {
+    const gT = doc.linearGradient(x, y, x, y + 32);
+    gT.stop(0, COLORS.navy, 0.85);
+    gT.stop(1, COLORS.navy, 0);
+    doc.rect(x, y, cardW, 32).fill(gT);
+  } catch { vGradient(x + 1, y + 1, cardW - 2, 32, 'top', 0.85); }
+
+  // gradiente na base (transição para texto)
+  try {
+    const gB = doc.linearGradient(x, y + imgH - 28, x, y + imgH);
+    gB.stop(0, COLORS.navy, 0);
+    gB.stop(1, COLORS.navy, 0.85);
+    doc.rect(x, y + imgH - 28, cardW, 28).fill(gB);
+  } catch { vGradient(x + 1, y + imgH - 28, cardW - 2, 28, 'bottom', 0.85); }
+  doc.restore();
 
   // numero do serviço sobre a imagem
-  doc.fontSize(10).fillColor(COLORS.redL).font('Helvetica-Bold');
-  doc.text(`0${i + 1}`, x + 12, y + 10, { characterSpacing: 1 });
+  doc.fontSize(9).fillColor(COLORS.redL).font('Helvetica-Bold');
+  doc.text(`0${i + 1}`, x + 12, y + 10, { characterSpacing: 1.5 });
 
   // accent vermelho
   doc.rect(x, y + imgH, cardW, 2).fill(COLORS.red);
@@ -342,64 +357,82 @@ function drawDetailPage(title, subtitle, services, pageNum, startIdx) {
   doc.fontSize(10).fillColor(COLORS.silver).font('Helvetica');
   doc.text(subtitle, MX, 138, { width: PW - MX * 2 });
 
-  // 3 cards horizontais grandes (full width, altura ~200)
+  // 3 cards lado-a-lado em coluna única — imagem NO TOPO, conteúdo abaixo
+  const gapV = 18;
   const cardH = 200;
-  const gapV = 14;
-  const startY = 170;
+  const startY = 168;
+  const w = PW - MX * 2;
+  const imgH = 105; // imagem altura fixa no topo do card
 
   services.forEach((s, i) => {
     const idx = startIdx + i;
     const y = startY + i * (cardH + gapV);
-    const w = PW - MX * 2;
 
-    // fundo
-    doc.rect(MX, y, w, cardH)
-       .lineWidth(1).strokeColor(COLORS.line).fillAndStroke(COLORS.navyM, COLORS.line);
+    // container card com borda sutil
+    doc.roundedRect(MX, y, w, cardH, 6)
+       .lineWidth(1)
+       .strokeColor(COLORS.line)
+       .fillAndStroke(COLORS.navyM, COLORS.line);
 
-    // imagem ocupa lado esquerdo (40% largura)
-    const imgW = w * 0.4;
+    // ─── ÁREA DA IMAGEM (topo do card, com clipping) ───
     const imgPath = path.join(SVC, s.img);
-    safeImage(imgPath, MX + 1, y + 1, { width: imgW - 1, height: cardH - 2, cover: [imgW - 1, cardH - 2] });
-
-    // gradiente vertical na imagem — escurece o topo (área do SERVIÇO XX)
-    vGradient(MX + 1, y + 1, imgW - 1, 56, 'top', 0.92);
-    // gradiente lateral à direita da imagem (transição suave para o texto)
     doc.save();
-    doc.opacity(0.5);
-    doc.rect(MX + imgW - 50, y, 50, cardH).fill(COLORS.navy);
+    // clip retângulo da imagem
+    doc.roundedRect(MX + 1, y + 1, w - 2, imgH - 1, 5).clip();
+    safeImage(imgPath, MX + 1, y + 1, { cover: [w - 2, imgH - 1] });
+
+    // gradiente nativo suave da base da imagem até preto (PDFKit linearGradient)
+    try {
+      const grad = doc.linearGradient(MX, y + imgH - 50, MX, y + imgH);
+      grad.stop(0, COLORS.navy, 0);
+      grad.stop(1, COLORS.navy, 0.92);
+      doc.rect(MX, y + imgH - 50, w, 50).fill(grad);
+    } catch {
+      // fallback caso linearGradient com opacity falhe
+      vGradient(MX + 1, y + imgH - 50, w - 2, 50, 'bottom', 0.85);
+    }
+
+    // gradiente no topo (legibilidade do SERVIÇO XX)
+    try {
+      const gradT = doc.linearGradient(MX, y, MX, y + 40);
+      gradT.stop(0, COLORS.navy, 0.85);
+      gradT.stop(1, COLORS.navy, 0);
+      doc.rect(MX, y, w, 40).fill(gradT);
+    } catch {
+      vGradient(MX + 1, y + 1, w - 2, 40, 'top', 0.85);
+    }
     doc.restore();
 
-    // accent vertical entre imagem e texto
-    doc.rect(MX + imgW, y, 3, cardH).fill(COLORS.red);
+    // accent vermelho fino entre imagem e conteúdo
+    doc.rect(MX, y + imgH, w, 2).fill(COLORS.red);
 
-    // número do serviço (agora bem visível sobre o gradiente escuro)
-    doc.fontSize(10).fillColor(COLORS.redL).font('Helvetica-Bold');
-    doc.text(`SERVIÇO  0${idx}`, MX + 14, y + 16, { characterSpacing: 2.5 });
+    // ─── ÁREA DE TEXTO (abaixo da imagem) ───
+    // header sobre imagem (canto superior esquerdo)
+    doc.fontSize(9).fillColor(COLORS.redL).font('Helvetica-Bold');
+    doc.text(`SERVIÇO ${String(idx).padStart(2, '0')}`, MX + 18, y + 14, { characterSpacing: 2.5 });
 
-    // texto à direita
-    const tx = MX + imgW + 22;
-    const tw = w - imgW - 36;
-
+    // título grande sobreposto na BASE da imagem (sobre o gradiente escuro)
     doc.fontSize(17).fillColor(COLORS.white).font('Helvetica-Bold');
-    doc.text(s.t, tx, y + 18, { width: tw, lineGap: 1 });
+    doc.text(s.t, MX + 18, y + imgH - 30, { width: w - 36, lineGap: 1 });
 
-    // separador
-    doc.rect(tx, y + 50, 30, 2).fill(COLORS.red);
+    // descrição (área branca abaixo)
+    const tx = MX + 22;
+    const tw = w - 44;
+    const descY = y + imgH + 14;
 
     doc.fontSize(10).fillColor(COLORS.silver).font('Helvetica');
-    doc.text(s.d, tx, y + 64, { width: tw, lineGap: 3 });
+    doc.text(s.d, tx, descY, { width: tw, lineGap: 3 });
 
-    // benefícios (bullets)
-    const bY = y + 122;
+    // bullets em 2 colunas no rodapé do card
+    const bY = y + cardH - 44;
     s.b.forEach((bullet, bi) => {
       const bCol = bi % 2;
       const bRow = Math.floor(bi / 2);
       const bx = tx + bCol * (tw / 2);
-      const by = bY + bRow * 18;
-      // bullet check
-      doc.fontSize(10).fillColor(COLORS.redL).font('Helvetica-Bold');
-      doc.text('✓', bx, by);
-      doc.fontSize(9).fillColor(COLORS.white).font('Helvetica');
+      const by = bY + bRow * 16;
+      // bullet round dot vermelho
+      doc.circle(bx + 3, by + 5, 2).fill(COLORS.red);
+      doc.fontSize(8.5).fillColor(COLORS.silver).font('Helvetica');
       doc.text(bullet, bx + 12, by + 1, { width: (tw / 2) - 16 });
     });
   });
@@ -437,84 +470,97 @@ sectionTitle('Engenharia e Soluções Avançadas', 78, 22);
 doc.fontSize(10).fillColor(COLORS.silver).font('Helvetica');
 doc.text('Projeto, comando e consultoria técnica para sistemas hidráulicos completos.', MX, 138, { width: PW - MX * 2 });
 
-// 3 cards menores em coluna (não usa toda a página, deixa espaço pra contato)
+// 3 cards menores em grid de 3 colunas (formato resumido)
 const remainServices = SERVICES.slice(6, 9);
-const rCardH = 110;
-const rGap = 10;
-const rStartY = 170;
+const rCols = 3;
+const rGap = 12;
+const rCardW = (PW - MX * 2 - rGap * (rCols - 1)) / rCols;
+const rCardH = 230;
+const rStartY = 168;
+
 remainServices.forEach((s, i) => {
   const idx = 7 + i;
-  const y = rStartY + i * (rCardH + rGap);
-  const w = PW - MX * 2;
+  const x = MX + i * (rCardW + rGap);
+  const y = rStartY;
 
-  doc.rect(MX, y, w, rCardH)
+  doc.roundedRect(x, y, rCardW, rCardH, 5)
      .lineWidth(1).strokeColor(COLORS.line).fillAndStroke(COLORS.navyM, COLORS.line);
 
-  const imgW = w * 0.3;
-  safeImage(path.join(SVC, s.img), MX + 1, y + 1, { width: imgW - 1, height: rCardH - 2, cover: [imgW - 1, rCardH - 2] });
+  // imagem com clipping
+  const imgH = 115;
+  doc.save();
+  doc.roundedRect(x + 1, y + 1, rCardW - 2, imgH - 1, 4).clip();
+  safeImage(path.join(SVC, s.img), x + 1, y + 1, { cover: [rCardW - 2, imgH - 1] });
 
-  // gradiente no topo da imagem (legibilidade do número)
-  vGradient(MX + 1, y + 1, imgW - 1, 32, 'top', 0.88);
-  // gradiente lateral
-  doc.save(); doc.opacity(0.5);
-  doc.rect(MX + imgW - 35, y, 35, rCardH).fill(COLORS.navy);
+  // gradiente topo
+  try {
+    const gT = doc.linearGradient(x, y, x, y + 30);
+    gT.stop(0, COLORS.navy, 0.85);
+    gT.stop(1, COLORS.navy, 0);
+    doc.rect(x, y, rCardW, 30).fill(gT);
+  } catch { vGradient(x + 1, y + 1, rCardW - 2, 30, 'top', 0.85); }
   doc.restore();
 
-  doc.rect(MX + imgW, y, 3, rCardH).fill(COLORS.red);
+  // accent
+  doc.rect(x, y + imgH, rCardW, 2).fill(COLORS.red);
 
-  // número sobre a imagem
-  doc.fontSize(9).fillColor(COLORS.redL).font('Helvetica-Bold');
-  doc.text(`0${idx}`, MX + 12, y + 12, { characterSpacing: 1.5 });
+  // número
+  doc.fontSize(8).fillColor(COLORS.redL).font('Helvetica-Bold');
+  doc.text(`SERVIÇO ${String(idx).padStart(2, '0')}`, x + 12, y + 10, { characterSpacing: 2 });
 
-  const tx = MX + imgW + 20;
-  const tw = w - imgW - 32;
+  // título
+  doc.fontSize(12).fillColor(COLORS.white).font('Helvetica-Bold');
+  doc.text(s.t, x + 12, y + imgH + 12, { width: rCardW - 24, lineGap: 1 });
 
-  doc.fontSize(9).fillColor(COLORS.redL).font('Helvetica-Bold');
-  doc.text(`SERVIÇO  0${idx}`, tx, y + 12, { characterSpacing: 2.5 });
-
-  doc.fontSize(14).fillColor(COLORS.white).font('Helvetica-Bold');
-  doc.text(s.t, tx, y + 28, { width: tw });
-
-  doc.fontSize(9).fillColor(COLORS.silver).font('Helvetica');
-  doc.text(s.d, tx, y + 52, { width: tw, lineGap: 2 });
-
-  // bullets compactos
-  doc.fontSize(8).fillColor(COLORS.white).font('Helvetica');
-  const bullets = s.b.slice(0, 4).map(b => `· ${b}`).join('    ');
-  doc.fillColor(COLORS.silver).text(bullets, tx, y + rCardH - 22, { width: tw });
+  // descrição
+  doc.fontSize(8.5).fillColor(COLORS.silver).font('Helvetica');
+  doc.text(s.d, x + 12, y + imgH + 44, { width: rCardW - 24, lineGap: 2 });
 });
 
-// Bloco contato no rodapé
-const cY = rStartY + remainServices.length * (rCardH + rGap) + 18;
-doc.rect(MX, cY, PW - MX * 2, PH - cY - 56)
+// Bloco contato no rodapé (espaço amplo abaixo dos 3 cards)
+const cY = rStartY + rCardH + 32;
+const cH = PH - cY - 56;
+doc.roundedRect(MX, cY, PW - MX * 2, cH, 6)
    .lineWidth(1).strokeColor(COLORS.line).fillAndStroke(COLORS.navyM, COLORS.line);
 doc.rect(MX, cY, PW - MX * 2, 3).fill(COLORS.red);
 
 if (fs.existsSync(logo)) {
-  doc.image(logo, MX + 22, cY + 22, { width: 58 });
+  doc.image(logo, MX + 28, cY + 30, { width: 70 });
 }
 
-doc.fontSize(11).fillColor(COLORS.redL).font('Helvetica-Bold');
-doc.text('PRONTO PARA RESOLVER SEU PROBLEMA HIDRÁULICO?', MX + 96, cY + 24, { characterSpacing: 1.5 });
-doc.fontSize(17).fillColor(COLORS.white).font('Helvetica-Bold');
-doc.text('Fale com José Neto', MX + 96, cY + 42);
-doc.fontSize(10).fillColor(COLORS.silver).font('Helvetica');
-doc.text('Orçamento personalizado e atendimento em todo o Brasil.', MX + 96, cY + 64);
+doc.fontSize(10).fillColor(COLORS.redL).font('Helvetica-Bold');
+doc.text('PRONTO PARA RESOLVER SEU PROBLEMA HIDRÁULICO?', MX + 116, cY + 32, { characterSpacing: 2 });
+doc.fontSize(22).fillColor(COLORS.white).font('Helvetica-Bold');
+doc.text('Fale com José Neto', MX + 116, cY + 54);
+doc.fontSize(11).fillColor(COLORS.silver).font('Helvetica');
+doc.text('Orçamento personalizado e atendimento em todo o Brasil.', MX + 116, cY + 84);
+
+// Divisor
+doc.moveTo(MX + 28, cY + 120).lineTo(PW - MX - 28, cY + 120)
+   .strokeColor(COLORS.line).lineWidth(1).stroke();
 
 // Linha de contatos
-const contactY = cY + 96;
+const contactY = cY + 140;
 const contacts = [
   { l: 'WHATSAPP',  v: '+55 (15) 99833-8067' },
   { l: 'INSTAGRAM', v: '@jejhidraulica' },
   { l: 'SITE',      v: 'jj-hidraulicos-vercel.vercel.app' },
 ];
-const colW = (PW - MX * 2 - 44) / 3;
+const colW = (PW - MX * 2 - 56) / 3;
 contacts.forEach((c, i) => {
-  const x = MX + 22 + i * colW;
+  const x = MX + 28 + i * colW;
   doc.fontSize(8).fillColor(COLORS.gray).font('Helvetica-Bold');
-  doc.text(c.l, x, contactY, { characterSpacing: 2 });
-  doc.fontSize(11).fillColor(COLORS.white).font('Helvetica-Bold');
+  doc.text(c.l, x, contactY, { characterSpacing: 2.5 });
+  doc.fontSize(13).fillColor(COLORS.white).font('Helvetica-Bold');
   doc.text(c.v, x, contactY + 14);
+});
+
+// CTA vermelho no fundo
+const ctaY6 = cY + cH - 56;
+doc.roundedRect(MX + 28, ctaY6, PW - MX * 2 - 56, 44, 4).fill(COLORS.red);
+doc.fontSize(11).fillColor(COLORS.white).font('Helvetica-Bold');
+doc.text('SOLICITE SEU ORÇAMENTO AGORA · WHATSAPP +55 (15) 99833-8067', MX + 28, ctaY6 + 17, {
+  width: PW - MX * 2 - 56, align: 'center', characterSpacing: 1.5
 });
 
 pageFooter(6, TOTAL_PAGES);
